@@ -1,0 +1,11 @@
+/* src/index.css */
+
+/* Importa as "diretivas" do Tailwind */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Você pode adicionar estilos globais aqui se quiser */
+body {
+  background-color: #f9fafb;
+}
