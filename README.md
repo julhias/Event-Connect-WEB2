@@ -38,13 +38,11 @@ Plataforma que conecta prestadores de serviço (como garçons, DJs, fotógrafos,
 
 ### R5 - Acesso à Rede ✅
 - Integração com JSONPlaceholder API (usuários e comentários)
-- Integração com Open-Meteo API (clima)
 - Sistema de loading e tratamento de erros
 - Operações assíncronas
 
 ### R6 - APIs Adicionais ✅
 - **Geolocalização**: Detecção automática da localização do usuário
-- **API de Clima**: Exibição de temperatura e condições climáticas
 - **LocalStorage**: Persistência de dados localmente
 
 ## 🚀 Instalação e Execução
@@ -92,9 +90,6 @@ http://localhost:3000
    - Usuários (transformados em prestadores)
    - Comentários (transformados em avaliações)
 
-2. **Open-Meteo** (https://api.open-meteo.com)
-   - Dados meteorológicos em tempo real
-   - Baseado na geolocalização do usuário
 
 3. **Geolocation API** (Navigator)
    - Detecção automática de localização
@@ -127,7 +122,6 @@ http://localhost:3000
 
 ### Recursos Adicionais
 - ✅ Detecção de localização geográfica
-- ✅ Exibição de clima atual
 - ✅ Sistema de notificações
 - ✅ Persistência de dados (LocalStorage)
 - ✅ Loading states
