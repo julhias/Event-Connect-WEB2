@@ -164,5 +164,5 @@ Este projeto é um trabalho acadêmico da disciplina Desenvolvimento de Software
 
 ## 👨‍💻 Desenvolvimento
 
-Projeto desenvolvido como parte da avaliação da disciplina DSW2, atendendo todos os requisitos (R1-R6) para nota máxima.
+Projeto desenvolvido como parte da avaliação da disciplina DSW2, atendendo todos os requisitos (R1-R6).
 ```
