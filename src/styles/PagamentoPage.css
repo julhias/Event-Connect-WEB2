@@ -1,0 +1,193 @@
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* removendo os estilos antigos que podem conflitar com o novo design */
+.pagamento-container,
+.card,
+.input-style,
+.btn,
+.btn-success,
+.nav-bottom,
+.nav-item,
+.nav-text {
+  all: unset;
+}
+
+/* estilos específicos que garantem que o Tailwind funcione corretamente */
+* {
+  box-sizing: border-box;
+}
+
+.pagamento-container {
+  background-color: #faf5ff;
+  color: #1f2937;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+/* cards!!! */
+.card {
+  background-color: white;
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  margin-bottom: 1.5rem;
+}
+
+/* inputs!!! */
+.input-style {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-style:focus {
+  outline: none;
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+/* botões!!! */
+.btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-success {
+  background-color: #10b981;
+  color: white;
+  border: none;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #059669;
+  transform: translateY(-1px);
+}
+
+.btn-success:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* navegação inferior!!! */
+.nav-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: white;
+  border-top: 1px solid #e5e7eb;
+  display: flex;
+  justify-content: space-around;
+  padding: 0.75rem 0;
+  z-index: 50;
+}
+
+.nav-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  color: #6b7280;
+  transition: color 0.2s;
+}
+
+.nav-item.active {
+  color: #8b5cf6;
+}
+
+.nav-item:hover {
+  color: #7c3aed;
+}
+
+.nav-text {
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+}
+
+/* animações!!! */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* responsividade!!! */
+@media (min-width: 768px) {
+  .pagamento-container {
+    max-width: 28rem; 
+    margin: 2rem auto;
+    border-radius: 1rem;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+    min-height: auto;
+  }
+  
+  .nav-bottom {
+    position: static;
+    border-top: none;
+    margin-top: 2rem;
+  }
+}
+
+/* estilos para os botãozinhos redondos do formulário!!! */
+input[type="radio"] {
+  appearance: none;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid #d1d5db;
+  border-radius: 50%;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+}
+
+input[type="radio"]:checked {
+  border-color: #8b5cf6;
+  background-color: #8b5cf6;
+}
+
+input[type="radio"]:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0.5rem;
+  height: 0.5rem;
+  background-color: white;
+  border-radius: 50%;
+}
