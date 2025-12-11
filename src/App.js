@@ -7,6 +7,7 @@ import PerfilPrestadorPage from './pages/PerfilPrestadorPage';
 import PerfilUsuarioPage from './pages/PerfilUsuarioPage';
 import GeolocationPage from './pages/GeolocationPage';
 import EventosPage from './pages/EventosPage';
+import MeusEventosPage from './pages/MeusEventosPage';
 import ContratosPage from './pages/ContratosPage';
 import PagamentoPage from './pages/PagamentoPage';
 import DesktopNavbar from './components/layout/DesktopNavbar';
@@ -27,6 +28,7 @@ function App() {
           <Route path="/perfil" element={<PerfilUsuarioPage />} />
           <Route path="/geolocation" element={<GeolocationPage />} />
           <Route path="/eventos" element={<EventosPage />} />
+          <Route path="/meus-eventos" element={<MeusEventosPage />} />
           <Route path="/contratos" element={<ContratosPage />} />
           <Route path="/pagamento" element={<PagamentoPage />} />
         </Routes>

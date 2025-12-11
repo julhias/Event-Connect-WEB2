@@ -11,7 +11,7 @@ function DesktopNavbar() {
     { path: '/', label: 'Início', icon: '🏠' },
     { path: '/prestadores', label: 'Prestadores', icon: '👥' },
     { path: '/geolocation', label: 'Geolocalização', icon: '📍' },
-    { path: '/eventos', label: 'Eventos', icon: '📅' },
+    { path: '/meus-eventos', label: 'Meus Eventos', icon: '📅' },
     { path: '/contratos', label: 'Contratos', icon: '📝' },
     { path: '/pagamento', label: 'Pagamento', icon: '💳' },
   ];
