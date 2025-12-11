@@ -3,17 +3,17 @@
 
 Plataforma que conecta prestadores de serviço (como garçons, DJs, fotógrafos, seguranças, entre outros) a pessoas que desejam contratar esses serviços para seus eventos.
 
-## 👥 Colaboradores
+## Colaboradores
 
 - **Larissa Dias da Silva** - RA: 800204
 - **Julia Fernanda Gonçalves Gaziero** - RA: 811852
 - **Julia Pedro Silva** - RA: 820869
 
-## 📄 Sobre o Projeto
+##  Sobre o Projeto
 
 O **EventConnect** é uma Single Page Application (SPA) desenvolvida como requisito da disciplina de DSW2. A aplicação visa solucionar a dificuldade de encontrar e gerenciar prestadores de serviços para eventos (casamentos, aniversários, formaturas), oferecendo um ecossistema completo desde a busca até o pagamento.
 
-## 📱 Telas e Funcionalidades
+## Telas e Funcionalidades
 
 O sistema possui **6 telas totalmente funcionais**, validadas através da análise do código fonte:
 
@@ -52,7 +52,7 @@ O sistema possui **6 telas totalmente funcionais**, validadas através da análi
 - **Gestão de Conta:** Edição de perfil, acesso a pagamentos e contratos.
 - **Design:** Interface organizada em seções (Conta, Preferências, Suporte).
 
-## 🏗️ Arquitetura do Backend
+##  Arquitetura do Backend
 
 O projeto utiliza uma arquitetura em camadas (**Layered Architecture**) para separar responsabilidades.
 
@@ -102,7 +102,7 @@ Garantia de integridade dos dados.
 | R5 | Acesso à Rede | ✅ Atendido | Integração Axios com API JSONPlaceholder. |
 | R6 | APIs HTML5 | ✅ Atendido | Uso de LocalStorage e Geolocalização. |
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias Utilizadas
 
 - **Frontend:** React.js
 - **Estilização:** Tailwind CSS
@@ -110,7 +110,7 @@ Garantia de integridade dos dados.
 - **Validação:** Custom Schemas
 - **Mock Data:** JSONPlaceholder & Picsum Photos
 
-## 🚀 Como Rodar o Projeto
+## Como Rodar o Projeto
 
 1. Clone este repositório:
 ```bash
