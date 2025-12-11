@@ -112,7 +112,7 @@ const EventosPage = () => {
 
   return (
     <div className="bg-purple-50 min-h-screen flex flex-col items-center">
-      <div className="w-full max-w-2xl flex-1 p-4 space-y-6 pb-20">
+      <div className="w-full max-w-2xl flex-1 p-4 space-y-6">
         
         {/* Header */}
         <header className="flex justify-between items-center pt-2 mb-4">
@@ -312,7 +312,7 @@ const EventosPage = () => {
         </form>
 
         {/* Lista de Eventos Salvos */}
-        <div className="mt-8">
+        <div className="mt-8 mb-8">
           <h3 className="text-lg font-semibold text-gray-800 mb-4">Eventos Salvos</h3>
           {eventos.length === 0 ? (
             <p className="text-gray-500">Nenhum evento encontrado.</p>
@@ -331,34 +331,6 @@ const EventosPage = () => {
           )}
         </div>
       </div>
-
-      {/* Bottom Navigation */}
-      <nav className="bg-white shadow-md flex justify-around py-2 border-t fixed bottom-0 w-full max-w-2xl left-1/2 transform -translate-x-1/2">
-        <button className="flex flex-col items-center justify-center text-purple-700 w-1/4">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1V10a1 1 0 00-1-1H7a1 1 0 00-1 1v10a1 1 0 001 1h2z" />
-          </svg>
-          <span className="text-xs font-semibold">Início</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-gray-500 w-1/4">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-          </svg>
-          <span className="text-xs font-semibold">Buscar</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-gray-500 w-1/4">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-          </svg>
-          <span className="text-xs font-semibold">Contratos</span>
-        </button>
-        <button className="flex flex-col items-center justify-center text-gray-500 w-1/4">
-          <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-          </svg>
-          <span className="text-xs font-semibold">Perfil</span>
-        </button>
-      </nav>
     </div>
   );
 };
