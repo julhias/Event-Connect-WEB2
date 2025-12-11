@@ -1,12 +1,13 @@
 // src/App.js
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
 import PrestadoresPage from './pages/PrestadoresPage';
+import PerfilPrestadorPage from './pages/PerfilPrestadorPage';
 import GeolocationPage from './pages/GeolocationPage';
 import EventosPage from './pages/EventosPage';
 import ContratosPage from './pages/ContratosPage';
 import PagamentoPage from './pages/PagamentoPage';
-import HomePage from './pages/HomePage';
 import DesktopNavbar from './components/layout/DesktopNavbar';
 import BottomNavigation from './components/layout/BottomNavigation';
 
@@ -21,6 +22,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/prestadores" element={<PrestadoresPage />} />
+          <Route path="/prestador/:id" element={<PerfilPrestadorPage />} />
           <Route path="/geolocation" element={<GeolocationPage />} />
           <Route path="/eventos" element={<EventosPage />} />
           <Route path="/contratos" element={<ContratosPage />} />

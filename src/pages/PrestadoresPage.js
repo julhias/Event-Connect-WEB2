@@ -142,9 +142,12 @@ function PrestadoresPage() {
                       <span className="text-sm sm:text-base font-bold text-purple-800">
                         R$ {100 + p.id * 10},00 /h
                       </span>
-                      <button className="bg-purple-100 text-purple-700 font-semibold px-4 py-2 rounded-lg text-xs sm:text-sm hover:bg-purple-200 transition-colors">
+                      <Link 
+                        to={`/prestador/${p.id}`}
+                        className="bg-purple-100 text-purple-700 font-semibold px-4 py-2 rounded-lg text-xs sm:text-sm hover:bg-purple-200 transition-colors"
+                      >
                         Ver Perfil
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 </div>
