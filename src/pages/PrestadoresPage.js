@@ -1,9 +1,20 @@
 // src/pages/PrestadoresPage.js
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import PrestadorService from '../services/PrestadorService';
+import { 
+  Search, 
+  ChevronLeft, 
+  MapPin, 
+  Star, 
+  CheckCircle, 
+  Filter, 
+  Briefcase,
+  Users
+} from 'lucide-react';
 
 function PrestadoresPage() {
+  const navigate = useNavigate();
   const [prestadores, setPrestadores] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -30,132 +41,140 @@ function PrestadoresPage() {
   );
 
   return (
-    <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
-      
-      {/* Mobile Header */}
-      <header className="flex lg:hidden justify-between items-center mb-6">
-        <Link to="/">
-          <button className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm hover:shadow-md transition">
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
-        </Link>
-        <h1 className="text-xl font-bold text-gray-800">Prestadores</h1>
-        <div className="w-10"></div>
-      </header>
+    <div className="bg-purple-50 min-h-screen font-sans pb-20 lg:pb-12">
+      <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8 space-y-6">
+        
+        {/* --- HEADER --- */}
+        <header className="flex items-center justify-between mb-4 lg:mb-8">
+            <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => navigate('/')} 
+                  className="w-10 h-10 flex lg:hidden items-center justify-center bg-white rounded-full shadow-sm hover:shadow-md transition text-gray-600"
+                >
+                    <ChevronLeft className="h-5 w-5" />
+                </button>
+                <div>
+                    <h1 className="text-xl lg:text-3xl font-bold text-gray-800 flex items-center gap-2">
+                        Prestadores
+                        <span className="hidden lg:flex bg-purple-100 text-purple-600 p-1.5 rounded-lg">
+                            <Users className="h-5 w-5" />
+                        </span>
+                    </h1>
+                    <p className="hidden lg:block text-gray-500 text-sm">Encontre os melhores profissionais para o seu evento</p>
+                </div>
+            </div>
+        </header>
 
-      {/* Desktop Header */}
-      <div className="hidden lg:block mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">Prestadores de Serviço</h1>
-        <p className="text-gray-600">Encontre os melhores profissionais para o seu evento</p>
-      </div>
+        {/* --- BARRA DE BUSCA --- */}
+        <div className="bg-white p-2 rounded-2xl shadow-sm border border-purple-100 flex items-center gap-2 max-w-3xl mx-auto">
+            <div className="flex-1 relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Buscar fotógrafo, buffet, DJ..."
+                    className="w-full pl-10 pr-4 py-3 bg-transparent outline-none text-gray-700 placeholder-gray-400 text-sm lg:text-base"
+                />
+            </div>
+            <button className="hidden sm:flex items-center gap-2 bg-gray-100 text-gray-600 px-4 py-2.5 rounded-xl hover:bg-gray-200 transition font-medium text-sm">
+                <Filter className="h-4 w-4" /> Filtros
+            </button>
+        </div>
 
-      {/* Search Bar */}
-      <div className="flex items-center bg-white rounded-xl shadow-sm p-3 sm:p-4 border border-purple-100 mb-6 hover:shadow-md transition">
-        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6 text-gray-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Buscar fotógrafo, buffet, DJ..."
-          className="flex-1 focus:outline-none text-gray-700 bg-transparent text-sm sm:text-base"
-        />
-        {searchTerm && (
-          <button
-            onClick={() => setSearchTerm('')}
-            className="ml-2 text-gray-400 hover:text-gray-600"
-          >
-            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+        {/* --- CONTEÚDO --- */}
+        {loading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600"></div>
+                <p className="mt-4 text-purple-600 font-medium animate-pulse">Buscando profissionais...</p>
+            </div>
+        ) : error ? (
+            <div className="bg-red-50 border border-red-200 text-red-700 p-6 rounded-2xl text-center max-w-lg mx-auto">
+                <div className="text-4xl mb-3">⚠️</div>
+                <p className="font-bold">Não foi possível carregar</p>
+                <p className="text-sm mt-1">{error}</p>
+            </div>
+        ) : filteredPrestadores.length === 0 ? (
+            <div className="text-center py-20 bg-white rounded-2xl border border-dashed border-gray-300">
+                <div className="bg-gray-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-bold text-gray-700">Nenhum prestador encontrado</h3>
+                <p className="text-gray-500 text-sm">Tente buscar por outro termo ou categoria.</p>
+            </div>
+        ) : (
+            <>
+                <p className="text-sm text-gray-500 font-medium ml-1">
+                    {filteredPrestadores.length} {filteredPrestadores.length === 1 ? 'profissional encontrado' : 'profissionais encontrados'}
+                </p>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                    {filteredPrestadores.map((p) => (
+                        <div
+                            key={p.id}
+                            className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all duration-300 flex flex-col overflow-hidden group"
+                        >
+                            {/* Header do Card (Foto + Avaliação) */}
+                            <div className="p-5 flex items-start gap-4 border-b border-gray-50">
+                                <div className="relative">
+                                    <img
+                                        className="w-16 h-16 rounded-full object-cover border-2 border-purple-100 group-hover:border-purple-300 transition-colors"
+                                        src={`https://images.unsplash.com/photo-${1500000000000 + p.id}?auto=format&fit=crop&w=200&q=80`} // Imagem aleatória baseada no ID
+                                        onError={(e) => {
+                                            e.target.src = `https://ui-avatars.com/api/?name=${p.nome}&background=f3e8ff&color=6b21a8`;
+                                        }}
+                                        alt={p.nome}
+                                    />
+                                    <div className="absolute -bottom-1 -right-1 bg-green-500 w-3.5 h-3.5 rounded-full border-2 border-white"></div>
+                                </div>
+                                
+                                <div className="flex-1 min-w-0">
+                                    <h3 className="font-bold text-gray-900 truncate leading-tight mb-1">{p.nome}</h3>
+                                    <div className="flex items-center text-xs text-gray-500 mb-1">
+                                        <Briefcase className="h-3 w-3 mr-1" />
+                                        <span className="truncate">{p.categoria || p.company?.bs || 'Serviços Gerais'}</span>
+                                    </div>
+                                    <div className="flex items-center gap-1 bg-yellow-50 w-fit px-1.5 py-0.5 rounded text-xs font-bold text-yellow-700 border border-yellow-100">
+                                        <Star className="h-3 w-3 fill-current" /> 4.8
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* Corpo do Card */}
+                            <div className="p-5 flex-1 flex flex-col justify-between">
+                                <div>
+                                    <div className="flex items-center text-xs text-purple-600 font-bold mb-3 bg-purple-50 w-fit px-2 py-1 rounded-md">
+                                        <CheckCircle className="h-3 w-3 mr-1" /> Verificado
+                                    </div>
+                                    
+                                    <div className="flex items-center text-sm text-gray-500 mb-4">
+                                        <MapPin className="h-4 w-4 mr-1.5 text-gray-400" />
+                                        <span className="truncate">{p.address?.city || 'São Paulo'}, SP</span>
+                                    </div>
+                                </div>
+
+                                <div className="flex items-center justify-between mt-2 pt-4 border-t border-gray-50">
+                                    <div className="flex flex-col">
+                                        <span className="text-xs text-gray-400 font-medium uppercase">A partir de</span>
+                                        <span className="text-base font-bold text-gray-900">
+                                            R$ {100 + (p.id * 5)},00 <span className="text-xs font-normal text-gray-500">/h</span>
+                                        </span>
+                                    </div>
+                                    
+                                    <Link 
+                                        to={`/prestador/${p.id}`}
+                                        className="bg-purple-600 text-white text-sm font-bold px-4 py-2 rounded-xl hover:bg-purple-700 transition shadow-sm hover:shadow-purple-200"
+                                    >
+                                        Ver Perfil
+                                    </Link>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </>
         )}
       </div>
-
-      {loading ? (
-        <div className="flex flex-col items-center justify-center py-20">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-700"></div>
-          <p className="mt-4 text-purple-600 font-semibold">Buscando profissionais...</p>
-        </div>
-      ) : error ? (
-        <div className="bg-red-100 text-red-700 p-6 rounded-xl text-center">
-          <div className="text-4xl mb-4">⚠️</div>
-          <p className="font-semibold">Ops! {error}</p>
-        </div>
-      ) : filteredPrestadores.length === 0 ? (
-        <div className="text-center py-20 opacity-50">
-          <div className="text-6xl mb-4">🔍</div>
-          <p className="text-gray-600">Nenhum prestador encontrado</p>
-        </div>
-      ) : (
-        <>
-          {/* Results Count */}
-          <div className="mb-4 text-sm text-gray-600">
-            {filteredPrestadores.length} {filteredPrestadores.length === 1 ? 'prestador encontrado' : 'prestadores encontrados'}
-          </div>
-
-          {/* Grid de Prestadores */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
-            {filteredPrestadores.map((p) => (
-              <div
-                key={p.id}
-                className="bg-white rounded-xl shadow-sm p-4 sm:p-5 border border-gray-100 hover:shadow-md transition-all duration-200 hover:-translate-y-1"
-              >
-                <div className="flex items-start space-x-4">
-                  {/* Imagem */}
-                  <img
-                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl object-cover flex-shrink-0 border-2 border-purple-100"
-                    src={`https://source.unsplash.com/random/200x200/?portrait&sig=${p.id}`}
-                    onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/150';
-                    }}
-                    alt={p.nome}
-                  />
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-start justify-between mb-2">
-                      <div className="flex-1 min-w-0">
-                        <p className="font-bold text-gray-800 text-sm sm:text-base truncate">
-                          {p.nome}
-                        </p>
-                        <p className="text-xs sm:text-sm text-gray-500 truncate">
-                          {p.categoria || p.company?.bs || 'Profissional'}
-                        </p>
-                      </div>
-                      <div className="flex items-center ml-2 flex-shrink-0">
-                        <span className="text-yellow-400 text-lg">★</span>
-                        <span className="text-sm font-semibold text-gray-700 ml-1">4.8</span>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center text-xs sm:text-sm text-purple-600 font-medium mb-3">
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                      </svg>
-                      <span>Verificado</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm sm:text-base font-bold text-purple-800">
-                        R$ {100 + p.id * 10},00 /h
-                      </span>
-                      <Link 
-                        to={`/prestador/${p.id}`}
-                        className="bg-purple-100 text-purple-700 font-semibold px-4 py-2 rounded-lg text-xs sm:text-sm hover:bg-purple-200 transition-colors"
-                      >
-                        Ver Perfil
-                      </Link>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </>
-      )}
     </div>
   );
 }

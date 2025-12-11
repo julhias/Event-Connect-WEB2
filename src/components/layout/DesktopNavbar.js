@@ -7,13 +7,13 @@ function DesktopNavbar() {
 
   const isActive = (path) => location.pathname === path;
 
+  // Removido o item de Pagamento da lista
   const navLinks = [
     { path: '/', label: 'Início', icon: '🏠' },
     { path: '/prestadores', label: 'Prestadores', icon: '👥' },
     { path: '/geolocation', label: 'Geolocalização', icon: '📍' },
     { path: '/meus-eventos', label: 'Meus Eventos', icon: '📅' },
     { path: '/contratos', label: 'Contratos', icon: '📝' },
-    { path: '/pagamento', label: 'Pagamento', icon: '💳' },
   ];
 
   return (

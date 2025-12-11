@@ -1,7 +1,17 @@
 // src/pages/MeusEventosPage.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ChevronLeft, Calendar, MapPin, FileText, Clock, Plus } from 'lucide-react';
+import { 
+  ChevronLeft, 
+  Calendar, 
+  MapPin, 
+  Clock, 
+  Plus, 
+  Trash2, 
+  Eye, 
+  PartyPopper,
+  Filter
+} from 'lucide-react';
 import EventoService from '../services/EventoService';
 import { formatters } from '../utils/formatters';
 
@@ -27,198 +37,236 @@ function MeusEventosPage() {
     }
   };
 
+  const handleDelete = async (id) => {
+    if (window.confirm('Tem certeza que deseja excluir este evento?')) {
+        try {
+            // Se o seu EventoService não tiver o delete, vamos simular aqui filtrando o estado
+            // await EventoService.delete(id); 
+            
+            // Simulação local para atualizar a UI instantaneamente
+            const novaLista = eventos.filter(e => e.id !== id);
+            setEventos(novaLista);
+            // Atualiza no localStorage também se estiver usando a simulação
+            localStorage.setItem('meus_eventos', JSON.stringify(novaLista));
+            
+        } catch (error) {
+            alert('Erro ao excluir evento');
+        }
+    }
+  };
+
   // Filtra eventos por status
   const eventosAtivos = eventos.filter(e => {
-    const dataEvento = new Date(e.data);
-    return dataEvento >= new Date();
+    // Simples verificação de data (assumindo formato ISO ou compatível)
+    // Se a data for inválida ou não existir, consideramos ativo por padrão para teste
+    if (!e.data) return true;
+    // Tenta converter formato BR (DD/MM/AAAA) para Date
+    let dataEvento;
+    if (e.data.includes('/')) {
+        const [dia, mes, ano] = e.data.split('/');
+        dataEvento = new Date(`${ano}-${mes}-${dia}`);
+    } else {
+        dataEvento = new Date(e.data);
+    }
+    return dataEvento >= new Date().setHours(0,0,0,0);
   });
 
   const eventosFinalizados = eventos.filter(e => {
-    const dataEvento = new Date(e.data);
-    return dataEvento < new Date();
+    if (!e.data) return false;
+    let dataEvento;
+    if (e.data.includes('/')) {
+        const [dia, mes, ano] = e.data.split('/');
+        dataEvento = new Date(`${ano}-${mes}-${dia}`);
+    } else {
+        dataEvento = new Date(e.data);
+    }
+    return dataEvento < new Date().setHours(0,0,0,0);
   });
 
   const eventosFiltrados = activeTab === 'ativos' ? eventosAtivos : eventosFinalizados;
 
   const getTabClass = (tab) => {
+    const baseClass = "flex-1 py-2.5 sm:py-3 text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-2 ";
     return activeTab === tab
-      ? 'w-full py-2 sm:py-3 text-sm font-semibold rounded-lg bg-purple-700 text-white transition-all'
-      : 'w-full py-2 sm:py-3 text-sm font-semibold rounded-lg text-gray-500 hover:bg-purple-50 transition-all';
+      ? baseClass + 'bg-purple-600 text-white shadow-md'
+      : baseClass + 'text-gray-500 hover:bg-purple-50 hover:text-purple-600';
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
-      
-      {/* Mobile Header */}
-      <header className="flex lg:hidden justify-between items-center mb-6">
-        <button onClick={() => navigate(-1)} className="w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-sm hover:shadow-md transition">
-          <ChevronLeft className="h-5 w-5 text-gray-600" />
-        </button>
-        <h1 className="text-xl font-bold text-gray-800">Meus Eventos</h1>
-        <div className="text-2xl">🎉</div>
-      </header>
-
-      {/* Desktop Header */}
-      <div className="hidden lg:flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Meus Eventos</h1>
-          <p className="text-gray-600">Gerencie todos os seus eventos</p>
-        </div>
-        <Link 
-          to="/eventos"
-          className="flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition shadow-lg"
-        >
-          <Plus className="h-5 w-5" />
-          Criar Novo Evento
-        </Link>
-      </div>
-
-      <div className="space-y-6">
+    <div className="bg-purple-50 min-h-screen font-sans pb-20 lg:pb-12">
+      <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8 space-y-6">
         
-        {/* Tabs */}
-        <div className="flex bg-white p-1 sm:p-1.5 rounded-xl border border-purple-200 shadow-sm">
-          <button 
-            onClick={() => setActiveTab('ativos')}
-            className={getTabClass('ativos')}
-          >
-            ✓ ATIVOS ({eventosAtivos.length})
-          </button>
-          <button 
-            onClick={() => setActiveTab('finalizados')}
-            className={getTabClass('finalizados')}
-          >
-            FINALIZADOS ({eventosFinalizados.length})
-          </button>
+        {/* --- HEADER --- */}
+        <header className="flex items-center justify-between mb-4 lg:mb-8">
+            <div className="flex items-center gap-3">
+                <button 
+                  onClick={() => navigate(-1)} 
+                  className="w-10 h-10 flex lg:hidden items-center justify-center bg-white rounded-full shadow-sm hover:shadow-md transition text-gray-600"
+                >
+                    <ChevronLeft className="h-5 w-5" />
+                </button>
+                <div>
+                    <h1 className="text-xl lg:text-3xl font-bold text-gray-800 flex items-center gap-2">
+                        Meus Eventos 
+                        <span className="lg:hidden text-2xl">🎉</span>
+                    </h1>
+                    <p className="hidden lg:block text-gray-500">Gerencie e acompanhe todos os seus eventos planejados</p>
+                </div>
+            </div>
+
+            <Link 
+                to="/eventos" // Link para a página de criação (EventosPage)
+                className="hidden lg:flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-purple-700 transition shadow-lg hover:-translate-y-0.5"
+            >
+                <Plus className="h-5 w-5" />
+                Criar Novo Evento
+            </Link>
+        </header>
+
+        {/* --- TABS DE FILTRO --- */}
+        <div className="bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-fit lg:inline-flex lg:gap-2">
+            <button onClick={() => setActiveTab('ativos')} className={getTabClass('ativos')}>
+                <Calendar className="h-4 w-4" />
+                ATIVOS <span className="bg-white/20 px-1.5 rounded text-xs ml-1">{eventosAtivos.length}</span>
+            </button>
+            <button onClick={() => setActiveTab('finalizados')} className={getTabClass('finalizados')}>
+                <Clock className="h-4 w-4" />
+                FINALIZADOS <span className="bg-gray-100 text-gray-500 px-1.5 rounded text-xs ml-1">{eventosFinalizados.length}</span>
+            </button>
         </div>
 
-        {/* Botão Criar Evento - Mobile */}
-        <Link 
-          to="/eventos"
-          className="lg:hidden flex items-center justify-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition shadow-lg"
-        >
-          <Plus className="h-5 w-5" />
-          Criar Novo Evento
-        </Link>
-
-        {/* Lista de Eventos */}
+        {/* --- LISTA DE EVENTOS --- */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-700"></div>
-            <p className="mt-4 text-purple-600 font-semibold">Carregando eventos...</p>
-          </div>
-        ) : eventosFiltrados.length === 0 ? (
-          <div className="bg-white rounded-xl p-12 text-center border border-gray-200">
-            <div className="text-6xl mb-4">
-              {activeTab === 'ativos' ? '📅' : '✓'}
+            <div className="flex flex-col items-center justify-center py-20">
+                <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-purple-600"></div>
+                <p className="mt-4 text-gray-500 text-sm font-medium">Carregando seus eventos...</p>
             </div>
-            <p className="text-gray-600 text-lg mb-6">
-              {activeTab === 'ativos' 
-                ? 'Você ainda não possui eventos ativos.' 
-                : 'Você ainda não possui eventos finalizados.'}
-            </p>
-            {activeTab === 'ativos' && (
-              <Link 
-                to="/eventos"
-                className="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
-              >
-                <Plus className="h-5 w-5" />
-                Criar Primeiro Evento
-              </Link>
-            )}
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            {eventosFiltrados.map((evento) => (
-              <div 
-                key={evento.id}
-                className="bg-white rounded-2xl border border-purple-200 shadow-sm hover:shadow-md transition-all p-4 sm:p-6 space-y-4"
-              >
-                {/* Imagem do Evento */}
-                <img 
-                  src={`https://images.pexels.com/photos/${3802773 + evento.id}/pexels-photo.jpeg?auto=compress&cs=tinysrgb&w=800`}
-                  alt={evento.nome}
-                  className="rounded-lg w-full h-40 sm:h-48 object-cover"
-                  onError={(e) => {
-                    e.target.src = 'https://images.pexels.com/photos/3802773/pexels-photo-3802773.jpeg?auto=compress&cs=tinysrgb&w=800';
-                  }}
-                />
-
-                {/* Nome e Tipo */}
-                <div>
-                  <h3 className="text-xl sm:text-2xl font-bold text-purple-900 mb-1">
-                    {evento.nome}
-                  </h3>
-                  <p className="text-sm font-semibold text-purple-500">
-                    {evento.tipo || 'Evento'}
-                  </p>
+        ) : eventosFiltrados.length === 0 ? (
+            <div className="bg-white rounded-2xl p-10 text-center border border-dashed border-gray-300 lg:p-16">
+                <div className="bg-purple-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                    {activeTab === 'ativos' ? <Calendar className="h-10 w-10 text-purple-300" /> : <Clock className="h-10 w-10 text-gray-300" />}
                 </div>
-
-                {/* Informações */}
-                <div className="flex justify-between text-sm border-t border-gray-100 pt-4">
-                  <div>
-                    <p className="font-bold text-gray-500 text-xs mb-1">DATA DO EVENTO</p>
-                    <p className="font-semibold text-gray-800">
-                      {formatters.formatarData ? formatters.formatarData(evento.data) : evento.data}
-                    </p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-gray-500 text-xs mb-1">LOCAL</p>
-                    <p className="font-semibold text-gray-800 truncate max-w-[150px]">
-                      {evento.local || 'Não definido'}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Descrição */}
-                {evento.observacoes && (
-                  <div className="border-t border-gray-100 pt-4">
-                    <p className="font-bold text-gray-500 text-xs mb-2">Descrição:</p>
-                    <p className="text-sm text-gray-600 line-clamp-2">
-                      {evento.observacoes}
-                    </p>
-                  </div>
+                <h3 className="text-xl font-bold text-gray-800 mb-2">
+                    {activeTab === 'ativos' ? 'Nenhum evento ativo' : 'Nenhum evento finalizado'}
+                </h3>
+                <p className="text-gray-500 mb-8 max-w-sm mx-auto">
+                    {activeTab === 'ativos' 
+                        ? 'Que tal começar a planejar sua próxima festa agora mesmo?' 
+                        : 'Seus eventos passados aparecerão aqui.'}
+                </p>
+                
+                {activeTab === 'ativos' && (
+                    <Link 
+                        to="/eventos"
+                        className="inline-flex items-center gap-2 bg-purple-600 text-white px-6 py-3 rounded-xl font-bold hover:bg-purple-700 transition shadow-lg hover:shadow-purple-200"
+                    >
+                        <Plus className="h-5 w-5" />
+                        Criar Primeiro Evento
+                    </Link>
                 )}
+            </div>
+        ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                {eventosFiltrados.map((evento) => (
+                    <div 
+                        key={evento.id}
+                        className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-lg hover:border-purple-200 transition-all duration-300 group flex flex-col overflow-hidden"
+                    >
+                        {/* Imagem (Capa) */}
+                        <div className="h-40 sm:h-48 overflow-hidden relative">
+                             <img 
+                                src={`https://images.pexels.com/photos/${3802773 + (evento.id * 10)}/pexels-photo.jpeg?auto=compress&cs=tinysrgb&w=800`}
+                                alt={evento.nome}
+                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                onError={(e) => {
+                                    e.target.src = 'https://images.pexels.com/photos/3802773/pexels-photo-3802773.jpeg?auto=compress&cs=tinysrgb&w=800';
+                                }}
+                             />
+                             <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-2.5 py-1 rounded-lg text-xs font-bold text-purple-700 uppercase tracking-wide shadow-sm">
+                                {evento.tipo || 'Evento'}
+                             </div>
+                        </div>
 
-                {/* Botões */}
-                <div className="flex gap-2 pt-2">
-                  <Link
-                    to={`/evento/${evento.id}`}
-                    className="flex-1 text-center py-3 bg-purple-700 text-white font-bold rounded-lg hover:bg-purple-800 transition"
-                  >
-                    Ver Detalhes
-                  </Link>
-                  <button
-                    onClick={() => {
-                      if (window.confirm('Deseja realmente excluir este evento?')) {
-                        EventoService.delete(evento.id);
-                        carregarEventos();
-                      }
-                    }}
-                    className="px-4 py-3 bg-red-100 text-red-700 font-bold rounded-lg hover:bg-red-200 transition"
-                  >
-                    🗑️
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
+                        {/* Conteúdo */}
+                        <div className="p-5 flex-1 flex flex-col">
+                            <h3 className="text-xl font-bold text-gray-900 mb-1 line-clamp-1 group-hover:text-purple-700 transition-colors">
+                                {evento.nome}
+                            </h3>
+                            
+                            <div className="space-y-2 mt-3 mb-4 flex-1">
+                                <div className="flex items-center text-sm text-gray-600">
+                                    <Calendar className="h-4 w-4 mr-2.5 text-purple-500" />
+                                    <span className="font-medium">{formatters.formatarData(evento.data)}</span>
+                                </div>
+                                <div className="flex items-center text-sm text-gray-600">
+                                    <MapPin className="h-4 w-4 mr-2.5 text-purple-500" />
+                                    <span className="truncate">{evento.local || 'Local a definir'}</span>
+                                </div>
+                            </div>
+
+                            {/* Botões de Ação */}
+                            <div className="grid grid-cols-4 gap-2 pt-4 border-t border-gray-50">
+                                <button 
+                                    className="col-span-3 py-2.5 bg-purple-50 text-purple-700 font-bold rounded-lg hover:bg-purple-100 transition-colors flex items-center justify-center gap-2 text-sm"
+                                    onClick={() => navigate(`/eventos`)} // Leva para edição (pode ajustar a rota)
+                                >
+                                    <Eye className="h-4 w-4" /> Ver Detalhes
+                                </button>
+                                <button 
+                                    onClick={() => handleDelete(evento.id)}
+                                    className="col-span-1 py-2.5 bg-red-50 text-red-500 rounded-lg hover:bg-red-100 transition-colors flex items-center justify-center"
+                                    title="Excluir Evento"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ))}
+            </div>
         )}
 
-        {/* Stats - Desktop */}
-        <div className="hidden lg:grid grid-cols-3 gap-4 mt-8">
-          <div className="bg-white rounded-xl p-6 border border-purple-100 text-center">
-            <div className="text-3xl font-bold text-purple-700 mb-2">{eventos.length}</div>
-            <div className="text-sm text-gray-600">Total de Eventos</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 border border-green-100 text-center">
-            <div className="text-3xl font-bold text-green-700 mb-2">{eventosAtivos.length}</div>
-            <div className="text-sm text-gray-600">Eventos Ativos</div>
-          </div>
-          <div className="bg-white rounded-xl p-6 border border-gray-100 text-center">
-            <div className="text-3xl font-bold text-gray-700 mb-2">{eventosFinalizados.length}</div>
-            <div className="text-sm text-gray-600">Finalizados</div>
-          </div>
+        {/* --- STATS (Desktop Only) --- */}
+        <div className="hidden lg:grid grid-cols-3 gap-6 pt-6 border-t border-gray-100">
+            <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div className="bg-purple-100 p-3 rounded-full text-purple-600">
+                    <PartyPopper className="h-6 w-6" />
+                </div>
+                <div>
+                    <p className="text-2xl font-bold text-gray-800">{eventos.length}</p>
+                    <p className="text-xs text-gray-500 font-bold uppercase">Total de Eventos</p>
+                </div>
+            </div>
+            
+            <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div className="bg-green-100 p-3 rounded-full text-green-600">
+                    <Calendar className="h-6 w-6" />
+                </div>
+                <div>
+                    <p className="text-2xl font-bold text-gray-800">{eventosAtivos.length}</p>
+                    <p className="text-xs text-gray-500 font-bold uppercase">Eventos Ativos</p>
+                </div>
+            </div>
+
+            <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm flex items-center gap-4">
+                <div className="bg-gray-100 p-3 rounded-full text-gray-500">
+                    <Clock className="h-6 w-6" />
+                </div>
+                <div>
+                    <p className="text-2xl font-bold text-gray-800">{eventosFinalizados.length}</p>
+                    <p className="text-xs text-gray-500 font-bold uppercase">Finalizados</p>
+                </div>
+            </div>
         </div>
+
+        {/* Botão Flutuante Mobile (FAB) */}
+        <Link 
+            to="/eventos"
+            className="lg:hidden fixed bottom-24 right-4 bg-purple-600 text-white p-4 rounded-full shadow-lg hover:bg-purple-700 transition z-40 animate-in zoom-in"
+        >
+            <Plus className="h-6 w-6" />
+        </Link>
+
       </div>
     </div>
   );

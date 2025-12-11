@@ -12,6 +12,7 @@ import ContratosPage from './pages/ContratosPage';
 import PagamentoPage from './pages/PagamentoPage';
 import DesktopNavbar from './components/layout/DesktopNavbar';
 import BottomNavigation from './components/layout/BottomNavigation';
+import MeuPerfilPage from './pages/MeuPerfilPage';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/meus-eventos" element={<MeusEventosPage />} />
           <Route path="/contratos" element={<ContratosPage />} />
           <Route path="/pagamento" element={<PagamentoPage />} />
+          <Route path="/meu-perfil" element={<MeuPerfilPage />} />
         </Routes>
       </main>
 
