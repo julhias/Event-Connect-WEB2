@@ -1,4 +1,3 @@
-// src/pages/MeusEventosPage.js
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { 
@@ -9,8 +8,7 @@ import {
   Plus, 
   Trash2, 
   Eye, 
-  PartyPopper,
-  Filter
+  PartyPopper
 } from 'lucide-react';
 import EventoService from '../services/EventoService';
 import { formatters } from '../utils/formatters';
@@ -40,15 +38,10 @@ function MeusEventosPage() {
   const handleDelete = async (id) => {
     if (window.confirm('Tem certeza que deseja excluir este evento?')) {
         try {
-            // Se o seu EventoService não tiver o delete, vamos simular aqui filtrando o estado
-            // await EventoService.delete(id); 
-            
             // Simulação local para atualizar a UI instantaneamente
             const novaLista = eventos.filter(e => e.id !== id);
             setEventos(novaLista);
-            // Atualiza no localStorage também se estiver usando a simulação
             localStorage.setItem('meus_eventos', JSON.stringify(novaLista));
-            
         } catch (error) {
             alert('Erro ao excluir evento');
         }
@@ -57,10 +50,7 @@ function MeusEventosPage() {
 
   // Filtra eventos por status
   const eventosAtivos = eventos.filter(e => {
-    // Simples verificação de data (assumindo formato ISO ou compatível)
-    // Se a data for inválida ou não existir, consideramos ativo por padrão para teste
     if (!e.data) return true;
-    // Tenta converter formato BR (DD/MM/AAAA) para Date
     let dataEvento;
     if (e.data.includes('/')) {
         const [dia, mes, ano] = e.data.split('/');
@@ -85,11 +75,13 @@ function MeusEventosPage() {
 
   const eventosFiltrados = activeTab === 'ativos' ? eventosAtivos : eventosFinalizados;
 
+  // CORREÇÃO: Função de estilo melhorada para alinhar texto e contador
   const getTabClass = (tab) => {
-    const baseClass = "flex-1 py-2.5 sm:py-3 text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-2 ";
+    const baseClass = "flex-1 py-2.5 sm:py-3 text-sm font-bold rounded-lg transition-all flex items-center justify-center gap-2 border ";
+    
     return activeTab === tab
-      ? baseClass + 'bg-purple-600 text-white shadow-md'
-      : baseClass + 'text-gray-500 hover:bg-purple-50 hover:text-purple-600';
+      ? baseClass + 'bg-purple-600 text-white border-purple-600 shadow-md transform scale-105' 
+      : baseClass + 'bg-transparent text-gray-500 border-transparent hover:bg-purple-50 hover:text-purple-600';
   };
 
   return (
@@ -115,7 +107,7 @@ function MeusEventosPage() {
             </div>
 
             <Link 
-                to="/eventos" // Link para a página de criação (EventosPage)
+                to="/eventos" 
                 className="hidden lg:flex items-center gap-2 bg-purple-600 text-white px-5 py-2.5 rounded-xl font-bold hover:bg-purple-700 transition shadow-lg hover:-translate-y-0.5"
             >
                 <Plus className="h-5 w-5" />
@@ -123,15 +115,22 @@ function MeusEventosPage() {
             </Link>
         </header>
 
-        {/* --- TABS DE FILTRO --- */}
-        <div className="bg-white p-1.5 rounded-xl border border-gray-200 shadow-sm max-w-md mx-auto lg:mx-0 lg:max-w-none lg:w-fit lg:inline-flex lg:gap-2">
+        {/* --- TABS DE FILTRO (CORRIGIDO) --- */}
+        {/* Container cinza claro para destacar os botões "pill" */}
+        <div className="bg-gray-100 p-1.5 rounded-xl border border-gray-200 shadow-inner max-w-md mx-auto lg:mx-0 flex">
             <button onClick={() => setActiveTab('ativos')} className={getTabClass('ativos')}>
                 <Calendar className="h-4 w-4" />
-                ATIVOS <span className="bg-white/20 px-1.5 rounded text-xs ml-1">{eventosAtivos.length}</span>
+                ATIVOS 
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-md ml-1 ${activeTab === 'ativos' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'}`}>
+                    {eventosAtivos.length}
+                </span>
             </button>
             <button onClick={() => setActiveTab('finalizados')} className={getTabClass('finalizados')}>
                 <Clock className="h-4 w-4" />
-                FINALIZADOS <span className="bg-gray-100 text-gray-500 px-1.5 rounded text-xs ml-1">{eventosFinalizados.length}</span>
+                FINALIZADOS 
+                <span className={`text-[10px] px-1.5 py-0.5 rounded-md ml-1 ${activeTab === 'finalizados' ? 'bg-white/20 text-white' : 'bg-gray-200 text-gray-600'}`}>
+                    {eventosFinalizados.length}
+                </span>
             </button>
         </div>
 
@@ -208,7 +207,7 @@ function MeusEventosPage() {
                             <div className="grid grid-cols-4 gap-2 pt-4 border-t border-gray-50">
                                 <button 
                                     className="col-span-3 py-2.5 bg-purple-50 text-purple-700 font-bold rounded-lg hover:bg-purple-100 transition-colors flex items-center justify-center gap-2 text-sm"
-                                    onClick={() => navigate(`/eventos`)} // Leva para edição (pode ajustar a rota)
+                                    onClick={() => navigate(`/eventos`)}
                                 >
                                     <Eye className="h-4 w-4" /> Ver Detalhes
                                 </button>

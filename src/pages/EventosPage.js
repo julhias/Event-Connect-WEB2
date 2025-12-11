@@ -1,4 +1,3 @@
-// src/pages/EventosPage.js
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -19,7 +18,7 @@ const EventosPage = () => {
   const navigate = useNavigate();
   const nomeInputRef = useRef(null);
 
-  // --- ESTADOS (Lógica Mantida) ---
+  // --- ESTADOS ---
   const [nomeEvento, setNomeEvento] = useState('');
   const [tipoEvento, setTipoEvento] = useState('aniversario');
   const [dataEvento, setDataEvento] = useState('');
@@ -158,7 +157,6 @@ const EventosPage = () => {
                         <Plus className="h-5 w-5 mr-2" />
                         Novo Evento
                     </button>
-                    {/* Ícone Mobile */}
                     <div className="lg:hidden text-2xl">🎉</div>
                 </div>
             </div>
@@ -263,7 +261,7 @@ const EventosPage = () => {
                         </div>
                     </div>
 
-                    {/* Local e Horário */}
+                    {/* Local e Horário - AQUI FOI APLICADA A CORREÇÃO (pl-12) */}
                     <div className="grid grid-cols-3 gap-4">
                          <div className="col-span-2 space-y-1.5">
                             <label className="text-xs lg:text-sm font-bold text-gray-600 uppercase tracking-wide">Local</label>
@@ -273,9 +271,13 @@ const EventosPage = () => {
                                     value={localEvento}
                                     onChange={(e) => setLocalEvento(e.target.value)}
                                     placeholder="Salão..."
-                                    className="w-full p-3 lg:p-3.5 pl-10 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-purple-500 transition-all text-sm lg:text-base outline-none font-medium"
+                                    // CORREÇÃO: pl-12 aqui para não encavalar
+                                    className="w-full p-3 lg:p-3.5 pl-12 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-purple-500 transition-all text-sm lg:text-base outline-none font-medium text-gray-700 placeholder-gray-400"
                                 />
-                                <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-purple-400" />
+                                {/* CORREÇÃO: pointer-events-none */}
+                                <div className="absolute left-4 top-1/2 -translate-y-1/2 text-purple-500 pointer-events-none">
+                                    <MapPin className="h-5 w-5" />
+                                </div>
                             </div>
                          </div>
                          <div className="space-y-1.5">
@@ -285,23 +287,27 @@ const EventosPage = () => {
                                     type="time"
                                     value={horarioEvento}
                                     onChange={(e) => setHorarioEvento(e.target.value)}
-                                    className="w-full p-3 lg:p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-purple-500 transition-all text-sm lg:text-base outline-none font-medium text-center"
+                                    className="w-full p-3 lg:p-3.5 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-purple-500 transition-all text-sm lg:text-base outline-none font-medium text-center text-gray-700"
                                 />
                             </div>
                          </div>
                     </div>
 
-                    {/* Observações */}
+                    {/* Observações - AQUI FOI APLICADA A CORREÇÃO (pl-12) */}
                     <div className="space-y-1.5">
                          <label className="text-xs lg:text-sm font-bold text-gray-600 uppercase tracking-wide">Notas</label>
                          <div className="relative">
                             <textarea 
                                 value={observacoes}
                                 onChange={(e) => setObservacoes(e.target.value)}
-                                placeholder="Detalhes adicionais..."
-                                className="w-full p-3 lg:p-3.5 pl-10 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-purple-500 transition-all text-sm lg:text-base outline-none font-medium min-h-[100px]"
+                                placeholder="Detalhes adicionais do evento..."
+                                // CORREÇÃO: pl-12 aqui também
+                                className="w-full p-3 lg:p-3.5 pl-12 bg-gray-50 border border-gray-200 rounded-xl focus:bg-white focus:border-purple-500 transition-all text-sm lg:text-base outline-none font-medium min-h-[100px] text-gray-700 placeholder-gray-400 resize-none"
                             />
-                            <AlignLeft className="absolute left-3 top-4 h-5 w-5 text-purple-400" />
+                            {/* CORREÇÃO: pointer-events-none */}
+                            <div className="absolute left-4 top-4 text-purple-500 pointer-events-none">
+                                <AlignLeft className="h-5 w-5" />
+                            </div>
                          </div>
                     </div>
 
