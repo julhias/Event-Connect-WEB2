@@ -7,156 +7,108 @@ Plataforma que conecta prestadores de serviço (como garçons, DJs, fotógrafos,
 - Julia Fernanda Gonçalves Gaziero - RA: 811852
 - Julia Pedro Silva - RA: 820869
 
-## 🎯 Requisitos Atendidos
+## 📋 Sobre o Projeto
 
-### R1 - Layout e Identidade Visual ✅
-- Design consistente com paleta de cores roxa/purple
-- Interface moderna e profissional
-- Seguindo princípios do Material Design
+O **EventConnect** é uma Single Page Application (SPA) desenvolvida como requisito da disciplina de DSW2. A aplicação visa solucionar a dificuldade de encontrar e gerenciar prestadores de serviços para eventos (casamentos, aniversários, formaturas), oferecendo um ecossistema completo desde a busca até o pagamento.
 
-### R2 - Múltiplas Telas ✅
-- Home
-- Criar Novo Evento
-- Meus Eventos
-- Detalhes do Evento
-- Meus Contratos
-- Detalhes do Contrato
-- Detalhes do Prestador
-- Contratar Serviço
-- Perfil/Configurações
+---
 
-### R3 - Layout Responsivo ✅
-- Otimizado para mobile, tablet e desktop
-- Uso de Tailwind CSS para responsividade
-- Componentes adaptáveis
+## 📱 Telas e Funcionalidades
 
-### R4 - Telas Funcionais ✅
-- Sistema completo de CRUD para Eventos
-- Sistema completo de CRUD para Contratos
-- Navegação entre telas
-- Estados e interações funcionais
+O sistema possui **6 telas totalmente funcionais**, validadas através da análise do código fonte:
 
-### R5 - Acesso à Rede ✅
-- Integração com JSONPlaceholder API (usuários e comentários)
-- Sistema de loading e tratamento de erros
-- Operações assíncronas
+### 1. HomePage (Tela Inicial)
+* **Navegação:** Menu completo (Prestadores, Geolocalização, Meus Eventos, Contratos, Sobre).
+* **Busca:** Barra de pesquisa de serviços e seção "Profissionais em Destaque".
+* **Dashboard:** Estatísticas em tempo real (Prestadores, Eventos, Satisfação).
+* **Categorias:** Cards para criação rápida de eventos (Aniversário, Casamento, etc).
 
-### R6 - APIs Adicionais ✅
-- **Geolocalização**: Detecção automática da localização do usuário
-- **LocalStorage**: Persistência de dados localmente
+### 2. EventosPage (Gestão de Eventos)
+* **CRUD Completo:** Criar, Listar e Visualizar eventos.
+* **Formulário Inteligente:** Validação de datas (impede datas no passado) e campos customizados.
+* **Persistência:** Integração com `EventoService` e `LocalStorage`.
 
-## 🚀 Instalação e Execução
+### 3. ContratosPage (Gestão de Contratos)
+* **Workflow de Status:** Sistema de abas para contratos `Ativos`, `Negociando` e `Concluídos`.
+* **Ações Rápidas:** Botões para iniciar Chat ou realizar Pagamento.
+* **Criação Inline:** Formulário rápido para novos contratos.
 
-### Pré-requisitos
-- Node.js 16+ instalado
-- npm ou yarn
+### 4. PagamentoPage (Checkout)
+* **Integração API (Requisito R5):** Simulação de transação via `POST` para `JSONPlaceholder`.
+* **Múltiplos Métodos:** Cartão de Crédito (com formatação automática), PIX e Boleto.
+* **Segurança:** Badges de ambiente seguro e validação de campos.
 
-### Passos para rodar o projeto
+### 5. PerfilPrestadorPage
+* **Dados Externos:** Perfis carregados via API externa.
+* **Funcionalidades:** Status online, disponibilidade e sistema de avaliações.
 
-1. Clone o repositório:
+### 6. PerfilUsuarioPage
+* **Gestão de Conta:** Edição de perfil, acesso a pagamentos e contratos.
+* **Design:** Interface organizada em seções (Conta, Preferências, Suporte).
+
+
+
+## 🏗️ Arquitetura do Backend
+
+O projeto utiliza uma arquitetura em camadas (**Layered Architecture**) para separar responsabilidades.
+
+### Estrutura de Pastas
 ```bash
-git clone [URL_DO_REPOSITORIO]
-cd eventconnect
-```
-
-2. Instale as dependências:
-```bash
-npm install
-```
-
-3. Inicie o servidor de desenvolvimento:
-```bash
-npm start
-```
-
-4. Acesse no navegador:
-```
-http://localhost:3000
-```
-
-## 🏗️ Arquitetura do Projeto
-
-### Frontend (React)
-- **Components**: Componentes reutilizáveis
-- **Pages**: Páginas completas da aplicação
-- **Services**: Lógica de negócio e chamadas API
-- **Repositories**: Camada de acesso a dados
-- **Controllers**: Controle de fluxo da aplicação
-- **Hooks**: Custom hooks para lógica compartilhada
-- **Context**: Gerenciamento de estado global
-
-### APIs Utilizadas
-1. **JSONPlaceholder** (https://jsonplaceholder.typicode.com)
-   - Usuários (transformados em prestadores)
-   - Comentários (transformados em avaliações)
+src/
+├── api/             # Configuração do cliente HTTP (Axios)
+├── pages/           # Camada de Apresentação (UI)
+├── services/        # Camada de Lógica de Negócio
+├── repositories/    # Camada de Acesso a Dados
+└── schemas/         # Camada de Validação
 
 
-3. **Geolocation API** (Navigator)
-   - Detecção automática de localização
-   - Precisão em metros
+### Services (Regras de Negócio)
+Responsável por toda a lógica e validação antes da persistência.
+* **EventoService.js:** Gerencia regras de criação, valida datas, controla status (ativo/finalizado) e gera imagens aleatórias.
+* **ContratoService.js:** Controla o ciclo de vida do contrato (negociando → ativo → concluído/cancelado) e timestamps.
+* **PrestadorService.js:** Atua como adaptador, transformando dados da API JSONPlaceholder (/users e /comments) em objetos de domínio do sistema.
 
-## 📊 Funcionalidades Implementadas
+### Repositories (Persistência)
+Abstração da camada de dados.
+* **EventoRepository.js & ContratoRepository.js:** Implementam persistência local usando LocalStorage (Requisito R6).
+* **PrestadorRepository.js:** Abstrai as chamadas externas, permitindo busca, filtro por categoria e recuperação de avaliações.
 
-### Gestão de Eventos
-- ✅ Criar novo evento
-- ✅ Listar eventos (ativos/finalizados)
-- ✅ Visualizar detalhes do evento
-- ✅ Editar evento
-- ✅ Excluir evento
-- ✅ Filtrar eventos por status
+### Schemas (Validação)
+Garantia de integridade dos dados.
+* **EventoSchema:** Garante que datas não sejam passadas, campos obrigatórios e limites de caracteres.
+* **ContratoSchema:** Valida valores monetários, descrições e vínculos com prestadores.
+* **PrestadorSchema:** Valida formatos de email e integridade dos dados do perfil.
 
-### Gestão de Contratos
-- ✅ Criar contrato/proposta
-- ✅ Listar contratos (ativos/negociando/concluídos)
-- ✅ Visualizar detalhes do contrato
-- ✅ Cancelar contrato
-- ✅ Filtrar contratos por status
+---
 
-### Prestadores de Serviço
-- ✅ Listar prestadores disponíveis
-- ✅ Visualizar perfil completo do prestador
-- ✅ Ver avaliações em tempo real (da API)
-- ✅ Filtrar por categoria
-- ✅ Buscar por nome ou categoria
-- ✅ Contratar serviço
+## 🎯 Requisitos Técnicos Atendidos
 
-### Recursos Adicionais
-- ✅ Detecção de localização geográfica
-- ✅ Sistema de notificações
-- ✅ Persistência de dados (LocalStorage)
-- ✅ Loading states
-- ✅ Tratamento de erros
-- ✅ Validação de formulários
+| ID | Requisito | Status | Detalhes da Implementação |
+|:--:|:----------|:------:|:--------------------------|
+| **R1** | Layout Consistente | ✅ | Identidade visual Roxo/Purple (Tailwind CSS). |
+| **R2** | 6 Telas Funcionais | ✅ | Todas as telas principais implementadas. |
+| **R3** | Responsividade | ✅ | Layout adaptável (Mobile/Desktop). |
+| **R4** | CRUD Funcional | ✅ | Create/Read/Update em Eventos e Contratos. |
+| **R5** | Acesso à Rede | ✅ | Integração Axios com API JSONPlaceholder. |
+| **R6** | APIs HTML5 | ✅ | Uso de LocalStorage e Geolocalização. |
 
-## 🎨 Tecnologias Utilizadas
+---
 
-- **React 18**: Framework JavaScript
-- **Tailwind CSS**: Estilização
-- **Lucide React**: Ícones
-- **Axios**: HTTP Client
-- **LocalStorage**: Persistência local
-- **Geolocation API**: Localização
-- **Open-Meteo API**: Dados climáticos
-- **JSONPlaceholder**: Mock API
+## 🛠️ Tecnologias Utilizadas
 
-## 📱 Screenshots
+* **Frontend:** React.js
+* **Estilização:** Tailwind CSS
+* **HTTP Client:** Axios
+* **Validação:** Custom Schemas
+* **Mock Data:** JSONPlaceholder & Picsum Photos
 
-[Adicionar screenshots das principais telas aqui]
+---
 
-## 🔄 Fluxo da Aplicação
+## 🚀 Como Rodar o Projeto
 
-1. Usuário acessa a Home
-2. Sistema detecta localização e clima
-3. Usuário pode:
-   - Criar um evento
-   - Buscar prestadores
-   - Ver contratos existentes
-4. Ao encontrar um prestador:
-   - Ver perfil completo
-   - Ver avaliações (API real)
-   - Contratar serviço
-5. Contratação gera uma proposta
-6. Gerenciar eventos e contratos
+1. **Clone este repositório:**
+   ```bash
+   git clone [https://github.com/seu-usuario/event-connect-dsw2.git](https://github.com/seu-usuario/event-connect-dsw2.git)
 
 ## 📝 Licença
 
