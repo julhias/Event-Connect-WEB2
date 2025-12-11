@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import PrestadoresPage from './pages/PrestadoresPage';
 import PerfilPrestadorPage from './pages/PerfilPrestadorPage';
+import PerfilUsuarioPage from './pages/PerfilUsuarioPage';
 import GeolocationPage from './pages/GeolocationPage';
 import EventosPage from './pages/EventosPage';
 import ContratosPage from './pages/ContratosPage';
@@ -23,6 +24,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/prestadores" element={<PrestadoresPage />} />
           <Route path="/prestador/:id" element={<PerfilPrestadorPage />} />
+          <Route path="/perfil" element={<PerfilUsuarioPage />} />
           <Route path="/geolocation" element={<GeolocationPage />} />
           <Route path="/eventos" element={<EventosPage />} />
           <Route path="/contratos" element={<ContratosPage />} />
